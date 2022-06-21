@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Welcome() {
   return (
@@ -10,10 +11,14 @@ function Welcome() {
               <div className="card">
                 <div className="card-header">Welcome Page</div>
                 <div className="card-body">
-                  <h5>Joe Dave</h5>
+                  <h5>Simple React Auth with JWT</h5>
                   <p>Welcome to Simple React Auth App.</p>
-                  <button className="btn btn-primary me-2">Login</button>
-                  <button className="btn btn-info">Register</button>
+                  <Link to="/login" className="btn btn-primary me-2">
+                    Login
+                  </Link>
+                  <Link to="/register" className="btn btn-info">
+                    Register
+                  </Link>
                 </div>
               </div>
             </div>
