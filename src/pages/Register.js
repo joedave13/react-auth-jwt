@@ -40,6 +40,12 @@ function Register() {
               <div className="card">
                 <div className="card-header">Register Page</div>
                 <div className="card-body">
+                  {validation.error && (
+                    <div className="alert alert-danger" role="alert">
+                      {validation.error}
+                    </div>
+                  )}
+
                   <form onSubmit={registerHandler} autoComplete="off">
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label">
