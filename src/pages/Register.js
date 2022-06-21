@@ -1,6 +1,36 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
+
+  // Validation
+  const [validation, setvalidation] = useState([]);
+
+  const navigate = useNavigate();
+  const registerHandler = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+    formData.append('password_confirmation', passwordConfirmation);
+
+    await axios
+      .post('http://auth-jwt-laravel.test/api/auth/register', formData)
+      .then(() => {
+        navigate('/login');
+      })
+      .catch((error) => {
+        setvalidation(error.response.data);
+      });
+  };
+
   return (
     <div className="container">
       <div className="d-flex align-items-center" style={{ height: '100vh' }}>
@@ -10,40 +40,80 @@ function Register() {
               <div className="card">
                 <div className="card-header">Register Page</div>
                 <div className="card-body">
-                  <form autoComplete="off">
-                    <div class="mb-3">
-                      <label for="name" class="form-label">
+                  <form onSubmit={registerHandler} autoComplete="off">
+                    <div className="mb-3">
+                      <label htmlFor="name" className="form-label">
                         Full Name
                       </label>
-                      <input type="text" class="form-control" id="name" />
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        placeholder="Full Name..."
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                      {validation.name && (
+                        <small className="text-danger">
+                          {validation.name[0]}
+                        </small>
+                      )}
                     </div>
-                    <div class="mb-3">
-                      <label for="email" class="form-label">
+                    <div className="mb-3">
+                      <label htmlFor="email" className="form-label">
                         Email Address
                       </label>
-                      <input type="email" class="form-control" id="email" />
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="email"
+                        placeholder="Email Address..."
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      {validation.email && (
+                        <small className="text-danger">
+                          {validation.email[0]}
+                        </small>
+                      )}
                     </div>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">
+                    <div className="mb-3">
+                      <label htmlFor="password" className="form-label">
                         Password
                       </label>
                       <input
                         type="password"
-                        class="form-control"
+                        className="form-control"
                         id="password"
+                        placeholder="Password..."
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
+                      {validation.password && (
+                        <small className="text-danger">
+                          {validation.password[0]}
+                        </small>
+                      )}
                     </div>
-                    <div class="mb-3">
-                      <label for="password_confirmation" class="form-label">
+                    <div className="mb-3">
+                      <label
+                        htmlFor="password_confirmation"
+                        className="form-label"
+                      >
                         Password Confirmation
                       </label>
                       <input
                         type="password"
-                        class="form-control"
+                        className="form-control"
                         id="password_confirmation"
+                        placeholder="Password Confirmation..."
+                        value={passwordConfirmation}
+                        onChange={(e) =>
+                          setPasswordConfirmation(e.target.value)
+                        }
                       />
                     </div>
-                    <button type="submit" class="btn btn-primary float-end">
+                    <button type="submit" className="btn btn-primary float-end">
                       Register
                     </button>
                   </form>
